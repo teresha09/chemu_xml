@@ -178,5 +178,5 @@ for i in range(len(res)):
     df = df.append({'text':res[i]["text"], "entities": res[i]["entities"]},
                    ignore_index=True)
 
-df.to_json("{}.json", orient="table")
+df.to_json("{}.json".format(args.out), orient="table")
 

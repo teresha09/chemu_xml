@@ -99,11 +99,10 @@ class Json2conll:
         new_f = open(corpus_json_location, "w+")
         json.dump(js_data, new_f)
 
-    def get_conlls(self):
+    def get_conlls(self, jsonpath,out):
         nltk.download(self.tagger)
         nltk.download('wordnet')
-        train = "train.json"
-        self.json_to_conll(train, "train.conll", self.entity)
+        self.json_to_conll(jsonpath, "{}.conll".format(out), self.entity)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -111,6 +110,8 @@ if __name__ == "__main__":
     parser.add_argument('--tagger', '-tagger', type=str, default='averaged_perceptron_tagger')
     parser.add_argument('--do_lower_case', '-do_lower_case', type=bool, default=True)
     parser.add_argument("-entity", "--entity", type=str, default="reaction_product,solvent,time,temperature")
+    parser.add_argument("-json", "--json", type=str, default="train.json")
+    parser.add_argument("-out", "--out", type=str, default="train")  ##out filename
     args = parser.parse_args()
     entity = []
     for i in args.entity.split(","):
@@ -118,4 +119,4 @@ if __name__ == "__main__":
     tagger = args.tagger
     vocab = args.vocab
     conll = Json2conll(entity, tagger, vocab, True)
-    conll.get_conlls()
+    conll.get_conlls(args.json, args.out)
